@@ -15,9 +15,9 @@
 		</header>
 		<main>
 			<section id="shortener">
-				<form action="api/shorturl" method="POST">
+				<form action="api/shorturl" method="POST" enctype="application/x-www-form-urlencoded">
 					<label for="long-url">URL:</label>
-					<input id="long-url" type="text" placeholder="https://www.google.com">
+					<input name="long-url" id="long-url" type="text" placeholder="https://www.google.com">
 					<button type="submit">Shorten</button>
 				</form>
 			</section>
