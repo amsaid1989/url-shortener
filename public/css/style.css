@@ -1,0 +1,63 @@
+:root {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 16px;
+}
+
+html {
+  background-color: lightgray;
+}
+
+body {
+  text-align: center;
+  width: 25%;
+  min-width: 320px;
+  margin: 0 auto;
+  margin-top: 3em;
+  padding: 2em;
+  padding-top: 0;
+  border: solid 1px darkgray;
+  border-radius: 0.5em;
+  background-color: white;
+}
+
+#shortener {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  margin-top: 1em;
+  padding: 1em;
+  border: solid 1px black;
+  border-radius: 0.25em;
+}
+
+#shortener form {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+}
+
+@media (max-width: 1600px) {
+  #shortener form {
+    flex-flow: column nowrap;
+    gap: 0.5em;
+  }
+}
+
+#long-url {
+  text-align: center;
+  flex-shrink: 2;
+}
+
+.section-title {
+  font-weight: bold;
+  margin: 0;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+a {
+  display: block;
+  color: darkcyan;
+}
