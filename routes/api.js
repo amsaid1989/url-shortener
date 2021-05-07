@@ -29,10 +29,6 @@ router.use(bodyParser.json());
 router.post("/shorturl", (req, res) => {
     const url = req.body["url"];
 
-    const urlErrors = {
-        ENOTFOUND: "Invalid hostname",
-    };
-
     axios
         .get(url)
         .then((response) => {
@@ -44,7 +40,7 @@ router.post("/shorturl", (req, res) => {
             });
         })
         .catch((err) => {
-            res.json({ error: urlErrors[err.code] });
+            res.json({ error: "invalid url" });
         });
 });
 
