@@ -38,8 +38,8 @@ router.post("/shorturl", (req, res) => {
         .then((response) => {
             dbOp.addLongURL(url).then((doc) => {
                 res.json({
-                    "long-url": doc["long-url"],
-                    "short-url": doc["short-url"],
+                    original_url: doc["long-url"],
+                    short_url: doc["short-url"],
                 });
             });
         })
