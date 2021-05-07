@@ -19,3 +19,9 @@ app.use("/api", apiRouter);
 app.listen(process.env.PORT, () => {
     console.log(`Express is listening on port ${process.env.PORT}`);
 });
+
+const db = require("./db/db");
+
+db.eventEmitter.on("dbinitialised", () => {
+    console.log("DB initialised successfully");
+});
