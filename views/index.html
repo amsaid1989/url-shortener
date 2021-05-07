@@ -17,7 +17,7 @@
 			<section id="shortener">
 				<form action="api/shorturl" method="POST" enctype="application/x-www-form-urlencoded">
 					<label for="long-url">URL:</label>
-					<input name="long-url" id="long-url" type="url" placeholder="https://www.google.com" required>
+					<input name="url" id="long-url" type="url" placeholder="https://www.google.com" autocomplete="off" required>
 					<button id="submit" type="submit">Shorten</button>
 				</form>
 				<div id="error" class="hidden"></div>
