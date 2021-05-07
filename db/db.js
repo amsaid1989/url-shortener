@@ -1,66 +1,41 @@
-require("dotenv").config();
-
-const events = require("events");
-
-const eventEmitter = new events.EventEmitter();
-
 const mongoose = require("mongoose");
 
-let nextID;
-
-mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-});
-
-let connection = mongoose.connection;
-
-connection.on("error", console.error.bind(console, "DB connection error"));
-
-connection.once("open", () => {
-    console.log("connected to DB successfully");
-    getLastID();
-});
+const urlPattern = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
 
 const urlSchema = new mongoose.Schema({
-    "long-url": { type: String, required: true },
+    "long-url": {
+        type: String,
+        required: true,
+        validate: {
+            validator: (url) => urlPattern.test(url),
+            message: (url) => `${url.value} is not a valid URL`,
+        },
+    },
     "short-url": { type: Number, required: true, index: true, unique: true },
 });
 
 const URL = mongoose.model("URL", urlSchema);
 
-function addURL(url) {
-    const obj = { "long-url": url, "short-url": nextID };
+function addLongURL(url) {
+    let short = 1;
 
-    const document = new URL(obj);
+    return getLastID().then((doc) => {
+        short = ++doc[0]["short-url"];
 
-    document.save((err, doc) => {
-        if (err) {
-            return console.log(err);
-        }
+        const obj = { "long-url": url, "short-url": short };
 
-        console.log(`Added ${url} successfully`);
+        const document = new URL(obj);
 
-        ++nextID;
+        return document.save();
     });
 }
 
-function getLastID() {
-    URL.find({})
-        .sort({ "short-url": "desc", test: -1 })
-        .limit(1)
-        .exec((err, doc) => {
-            if (err) {
-                return console.log(err);
-            }
-
-            let id = doc[0]["short-url"];
-
-            nextID = id ? ++id : 1;
-
-            eventEmitter.emit("dbinitialised");
-        });
+function getShortURL(url) {
+    return URL.findOne({ "short-url": url });
 }
 
-module.exports = { eventEmitter, addURL };
+function getLastID() {
+    return URL.find({}).sort({ "short-url": "desc", test: -1 }).limit(1);
+}
+
+module.exports = { addLongURL, getShortURL };

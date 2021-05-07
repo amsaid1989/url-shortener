@@ -21,7 +21,8 @@ function formValidation() {
     if (urlInput.validity.valueMissing) {
         errorMsg.textContent = "Please enter a URL";
     } else if (urlInput.validity.typeMismatch) {
-        errorMsg.textContent = "Invalid URL";
+        errorMsg.textContent =
+            "Invalid URL. URLs must start with http:// or https:// followed by a web address";
     }
 }
 
